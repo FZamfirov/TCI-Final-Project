@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WholeSiteCrawler implements IWebCrawler {
+public class WebCrawler implements IWebCrawler {
 
     private String baseUrl;
 
-    public WholeSiteCrawler(String baseUrl) {
+    public WebCrawler(String baseUrl) {
         this.baseUrl=baseUrl;
     }
 
@@ -21,8 +21,8 @@ public class WholeSiteCrawler implements IWebCrawler {
     }
 
     @Override
-    public ArrayList<Item> craw(String baseURL) throws IOException {
-        ArrayList<Item> result= new ArrayList<Item>();
+    public ArrayList<Document> craw(String baseURL) throws IOException {
+        ArrayList<Document> result= new ArrayList<Document>();
 
         Document allobjects;
         allobjects = Jsoup.connect(baseURL).get();
@@ -35,7 +35,19 @@ public class WholeSiteCrawler implements IWebCrawler {
 
             Document tempobj = Jsoup.connect("http://localhost:8012/tcisite/" + url).get();
 
-            Element innerHTML = tempobj.body().getElementsByClass("media-details").first();
+            result.add(tempobj);
+        }
+
+        return result;
+    }
+
+    public ArrayList<Item> ScrapeInformation() throws IOException {
+        ArrayList<Item> result = new ArrayList<Item>();
+        ArrayList<Document> objects;
+        objects = craw(baseUrl);
+
+        for(Document temp:objects){
+            Element innerHTML = temp.body().getElementsByClass("media-details").first();
             String objname = innerHTML.select("h1").first().text();
             ArrayList<Element> tablesElements = innerHTML.select("table").first().select("tr");
 
@@ -51,8 +63,8 @@ public class WholeSiteCrawler implements IWebCrawler {
             //TODO other types
 
             for (int y=1;y<tablesElements.size();y++){
-                 elementName = tablesElements.get(y).select("th").first().text();
-                 elementContent = tablesElements.get(y).select("td").first().text();
+                elementName = tablesElements.get(y).select("th").first().text();
+                elementContent = tablesElements.get(y).select("td").first().text();
                 if(item instanceof Music){
                     switch (elementName){
                         case "Genre":
@@ -72,7 +84,8 @@ public class WholeSiteCrawler implements IWebCrawler {
             }
             result.add(item);
         }
-
         return result;
     }
+
+
 }
