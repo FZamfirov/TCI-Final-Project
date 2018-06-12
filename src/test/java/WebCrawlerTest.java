@@ -1,8 +1,9 @@
 import Entities.Item;
+import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
-
+import Implementation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,63 +12,28 @@ import static org.mockito.Mockito.when;
 
 public class WebCrawlerTest {
     static final String BASE_URL="http://localhost:8012/tcisite/catalog.php";
-    static final String SPEC_NAME="Elvis Forever";
+    static final String NUM_OF_ITEMS = "12";
 
 
 
     @Test
     public void getBaseURLTest(){
-        String baseUrl =BASE_URL;
-        WebCrawler testCrawler = new WebCrawler(baseUrl);
+        WebCrawler testCrawler = new WebCrawler(BASE_URL);
 
-        Assert.assertEquals("Expected " + baseUrl + ",but received " + testCrawler.getBaseUrl(),baseUrl,testCrawler.getBaseUrl());
+        Assert.assertEquals("Expected " + BASE_URL + ",but received " + testCrawler.getBaseUrl(),BASE_URL,testCrawler.getBaseUrl());
     }
 
     @Test
-    public void scrapeInformationTest() throws IOException {
-        Item testItem = Mockito.mock(Item.class);
-        when(testItem.getName()).thenReturn("Beethoven: Complete Symphonies");
+    public void amountOfCrawledItemsTest() throws IOException {
         WebCrawler testCrawler = new WebCrawler(BASE_URL);
 
-        ArrayList<Item> result =  testCrawler.ScrapeInformation();
-        Assert.assertEquals("Expected " + testItem.getName() + ",but received " + result.get(0).getName(),testItem.getName(), result.get(0).getName());
+        ArrayList<Document> result = testCrawler.craw();
+
+        Assert.assertEquals("Expected " + NUM_OF_ITEMS + ",but received " + result.size(),Integer.parseInt(NUM_OF_ITEMS),result.size());
+
     }
 
-    @Test
-    public void scrapeAllItemsTest() throws IOException {
 
-        Item testItem = Mockito.mock(Item.class);
-        when(testItem.getName()).thenReturn("Beethoven: Complete Symphonies");
 
-        WebCrawler testCrawler = new WebCrawler(BASE_URL);
 
-        ArrayList<Item> result =  testCrawler.ScrapeInformation();
-        Assert.assertEquals("Expected "+testItem.getName()+",but received "+ result.get(0).getName(),testItem.getName(), result.get(0).getName());
-    }
-
-    @Test
-    public void scrapeSpecificItemTest() throws IOException {
-        WebCrawler testCrawler = new WebCrawler(BASE_URL);
-
-        Item result = testCrawler.ScrapeInformationFromName("Elvis Forever");
-
-        Assert.assertEquals("Expected "+ SPEC_NAME + ",but received " + result.getName(),SPEC_NAME,result.getName());
-    }
-
-    @Test
-    public void scrapeSpecificItemFailTest() throws IOException {
-        WebCrawler testCrawler = new WebCrawler(BASE_URL);
-
-        Item result = testCrawler.ScrapeInformationFromName("There is no such name");
-
-        Assert.assertEquals("Expected "+ null + ",but received " + result,null,result);
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void scrapeSpecificItemExceptionTest() throws IOException {
-        WebCrawler testCrawler = new WebCrawler("Test");
-
-        Item result = testCrawler.ScrapeInformationFromName("Test");
-
-           }
 }

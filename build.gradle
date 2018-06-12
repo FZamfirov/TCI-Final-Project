@@ -18,5 +18,17 @@ dependencies {
     compile 'org.jsoup:jsoup:1.11.3'
     // https://mvnrepository.com/artifact/org.mockito/mockito-all
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider
+    compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-json-provider', version: '2.9.5'
+    // https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-json-jackson
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.27'
+// https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.27'
+// https://mvnrepository.com/artifact/org.glassfish.jersey/jersey-bom
+    compile group: 'org.glassfish.jersey', name: 'jersey-bom', version: '2.27', ext: 'pom'
+// https://mvnrepository.com/artifact/org.glassfish.jersey.inject/jersey-hk2
+    compile group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.27'
+
+
 
 }
