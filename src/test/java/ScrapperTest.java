@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 public class ScrapperTest {
 
     static final String BASE_URL="http://localhost:8012/tcisite/catalog.php";
-    static final String SPEC_NAME="Elvis Forever";
+    static final String SPEC_NAME="Elvis Forever"; //TODO: Parameterized Test
     static final String NUM_OF_ITEMS = "12";
 
     @Test
