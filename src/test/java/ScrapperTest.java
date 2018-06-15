@@ -1,19 +1,30 @@
 import Entities.Item;
 import Implementation.Scrapper;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import static org.mockito.Mockito.when;
 
+@RunWith(JUnitParamsRunner.class)
 public class ScrapperTest {
 
     static final String BASE_URL="http://localhost:8012/tcisite/catalog.php";
-    static final String SPEC_NAME="Elvis Forever"; //TODO: Parameterized Test
+    static final String SPEC_NAME="Elvis Forever";
     static final String NUM_OF_ITEMS = "12";
+
+    public Object[] getParams(){
+        return new Object[]{
+                new Object[]{"Elvis Forever"},
+                new Object[]{"Beethoven: Complete Symphonies"},
+                new Object[]{"No Fences"},
+                new Object[]{"The Very Thought of You"},
+        };
+    }
 
     @Test
     public void scrapeInformationTest() throws IOException {
@@ -38,13 +49,14 @@ public class ScrapperTest {
     }
 
     @Test
-    public void scrapeSpecificItemTest() throws IOException {
+    @Parameters(method = "getParams")
+    public void scrapeSpecificItemTest(String NAME_PARAM) throws IOException {
 
         Scrapper scrapper = new Scrapper(BASE_URL);
 
-        Item result = scrapper.ScrapeInformationFromName("Elvis Forever");
+        Item result = scrapper.ScrapeInformationFromName(NAME_PARAM);
 
-        Assert.assertEquals("Expected "+ SPEC_NAME + ",but received " + result.getName(),SPEC_NAME,result.getName());
+        Assert.assertEquals("Expected "+ NAME_PARAM + ",but received " + result.getName(),NAME_PARAM,result.getName());
     }
 
     @Test

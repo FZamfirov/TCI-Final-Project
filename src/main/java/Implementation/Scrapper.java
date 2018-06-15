@@ -90,9 +90,11 @@ public class Scrapper {
     public Item ScrapeInformationFromName(String Name) throws IOException {
 
         for(Document temp:objectsToScrape){
-            Element innerHTML = temp.body().getElementsByClass("media-details").first();
-            String objname = innerHTML.select("h1").first().text();
-            ArrayList<Element> tablesElements = innerHTML.select("table").first().select("tr");
+            //Skip all the non-Item pages
+            if(temp.location().contains("details")){
+                Element innerHTML = temp.body().getElementsByClass("media-details").first();
+                String objname = innerHTML.select("h1").first().text();
+                ArrayList<Element> tablesElements = innerHTML.select("table").first().select("tr");
 
             if(objname.equals(Name)){
 
@@ -129,6 +131,7 @@ public class Scrapper {
                 return item;
             }
         }
-        return null;
     }
+        return null;
+}
 }
